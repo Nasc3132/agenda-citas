@@ -77,6 +77,20 @@ class _PantallaAgendaState extends State<PantallaAgenda> {
   final List<Map<String, String>> _citas = [];
 
   void _guardarCita() {
+    final datosCita = [
+      _nombreController.text,
+      _fechaController.text,
+      _horaController.text,
+      _motivoController.text,
+    ];
+
+    if (datosCita.any((dato) => dato.trim().isEmpty)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Completa todos los campos para guardar.')),
+      );
+      return;
+    }
+
     // setState avisa a Flutter que el estado cambió. Flutter vuelve a ejecutar
     // build y ListView.builder incluye inmediatamente la nueva cita.
     setState(() {

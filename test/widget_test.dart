@@ -3,6 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('no registra una cita cuando los campos están vacíos', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const AgendaCitasApp());
+
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Guardar cita'));
+    await tester.pump();
+
+    expect(find.text('Aún no hay citas'), findsOneWidget);
+    expect(find.text('1 citas'), findsNothing);
+    expect(find.text('Completa todos los campos para guardar.'), findsOneWidget);
+  });
+
+  testWidgets('no registra una cita cuando faltan campos', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const AgendaCitasApp());
+    await tester.enterText(find.byType(TextField).first, 'Ana López');
+
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Guardar cita'));
+    await tester.pump();
+
+    expect(find.text('Aún no hay citas'), findsOneWidget);
+    expect(find.text('1 citas'), findsNothing);
+    expect(find.text('Completa todos los campos para guardar.'), findsOneWidget);
+  });
+
   testWidgets('registra y muestra una cita', (WidgetTester tester) async {
     await tester.pumpWidget(const AgendaCitasApp());
 
